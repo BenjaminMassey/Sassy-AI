@@ -1,4 +1,5 @@
 mod gpt;
+mod transcribe;
 
 use tts::*;
 
