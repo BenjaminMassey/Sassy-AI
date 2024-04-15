@@ -1,6 +1,9 @@
 mod gpt;
 
+use tts::*;
+
 fn main() {
+    let mut tts = Tts::default().unwrap();
     loop {
         let mut buffer = String::new();
         let read = std::io::stdin().read_line(&mut buffer);
@@ -14,6 +17,7 @@ fn main() {
             let query = gpt::local_gpt_chat(&message, 200);
             if let Some(response) = query {
                 println!("\n{response}\n\n");
+                let _ = tts.speak(&response, true);
             }
         }
     }
