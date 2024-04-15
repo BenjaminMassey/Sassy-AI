@@ -1,9 +1,9 @@
 mod gpt;
 mod record;
 mod transcribe;
-use whisper_rs::{WhisperContext, WhisperContextParameters};
 
 use tts::*;
+use whisper_rs::{WhisperContext, WhisperContextParameters};
 
 const MODEL_BIN: &str = "C:\\Users\\benjamin.massey\\Downloads\\ggml-base.en.bin";
 const WORKING_WAV_FILE: &str = "temp.wav";
