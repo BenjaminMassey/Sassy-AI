@@ -1,9 +1,6 @@
 // Modification of https://github.com/tazz4843/whisper-rs/blob/master/examples/audio_transcription.rs
 
-use hound;
 use whisper_rs::{FullParams, SamplingStrategy, WhisperState};
-
-
 
 pub fn wav_to_text(state: &mut WhisperState, wav_file: &str) -> Result<String, &'static str> {
     // Create a params object for running the model.
@@ -38,7 +35,7 @@ pub fn wav_to_text(state: &mut WhisperState, wav_file: &str) -> Result<String, &
         .into_samples::<i16>()
         .map(|x| x.expect("Invalid sample"))
         .collect();
-    let mut audio = vec![0.0f32; samples.len().try_into().unwrap()];
+    let mut audio = vec![0.0f32; samples.len()];
     whisper_rs::convert_integer_to_float_audio(&samples, &mut audio).expect("Conversion error");
 
     // Convert audio to 16KHz mono f32 samples, as required by the model.

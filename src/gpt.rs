@@ -23,7 +23,7 @@ fn local_gpt_body(message: &str, tokens: usize) -> String {
 }
 
 pub fn local_gpt_chat(message: &str, tokens: usize) -> Option<String> {
-    let url = "http://".to_owned() + &GPT_URL + "/v1/chat/completions";
+    let url = "http://".to_owned() + GPT_URL + "/v1/chat/completions";
     let client = reqwest::blocking::Client::new();
     let body = local_gpt_body(message, tokens);
     let result = client.post(url).body(body).send();
@@ -35,17 +35,8 @@ pub fn local_gpt_chat(message: &str, tokens: usize) -> Option<String> {
         return None;
     }
     let value: serde_json::Value = json.unwrap();
-    let choices = value.get("choices");
-    if choices.is_none() {
-        return None;
-    }
-    let message = choices.unwrap()[0].get("message");
-    if message.is_none() {
-        return None;
-    }
-    let content = message.unwrap().get("content");
-    if content.is_none() {
-        return None;
-    }
-    Some(content.unwrap().to_string())
+    let choices = value.get("choices")?;
+    let message = choices[0].get("message")?;
+    let content = message.get("content")?;
+    Some(content.to_string())
 }

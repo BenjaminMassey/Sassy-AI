@@ -9,12 +9,14 @@ const MODEL_BIN: &str = "C:\\Users\\benjamin.massey\\Downloads\\ggml-base.en.bin
 const WORKING_WAV_FILE: &str = "temp.wav";
 
 fn main() {
-    let whisper_ctx = WhisperContext::new_with_params(MODEL_BIN, WhisperContextParameters::default()).unwrap();
+    let whisper_ctx =
+        WhisperContext::new_with_params(MODEL_BIN, WhisperContextParameters::default()).unwrap();
     let mut whisper = whisper_ctx.create_state().unwrap();
     let mut tts = Tts::default().unwrap();
     loop {
         println!("Press ENTER to start recording, or ESCAPE to quit.");
-        loop { // TODO: unhappy with this structure, but stdin().read_line(..) not halting on non-first iterations
+        loop {
+            // TODO: unhappy with this structure, but stdin().read_line(..) not halting on non-first iterations
             if mki::are_pressed(&[mki::Keyboard::Enter]) {
                 break;
             } else if mki::are_pressed(&[mki::Keyboard::Escape]) {

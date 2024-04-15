@@ -24,9 +24,9 @@ pub fn output_to_wav(wav_file: &str) {
             break;
         }
     }
-    
+
     recorder.stop().expect("Failed to stop audio recording");
-    
+
     let spec = hound::WavSpec {
         channels: 1,
         sample_rate: SAMPLE_RATE as u32,
