@@ -15,7 +15,7 @@ pub fn output_to_wav(wav_file: &str) {
 
     recorder.start().expect("Failed to start audio recording");
 
-    println!("Press enter to stop recording.");
+    println!("Press ENTER to stop recording.");
     let mut audio_data = Vec::new();
     loop {
         let frame = recorder.read().expect("Failed to read audio frame");

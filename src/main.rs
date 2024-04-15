@@ -1,22 +1,28 @@
 mod gpt;
 mod record;
 mod transcribe;
+use whisper_rs::{WhisperContext, WhisperContextParameters};
 
 use tts::*;
 
+const MODEL_BIN: &str = "C:\\Users\\benjamin.massey\\Downloads\\ggml-base.en.bin";
 const WORKING_WAV_FILE: &str = "temp.wav";
 
 fn main() {
+    let whisper_ctx = WhisperContext::new_with_params(MODEL_BIN, WhisperContextParameters::default()).unwrap();
+    let mut whisper = whisper_ctx.create_state().unwrap();
     let mut tts = Tts::default().unwrap();
     loop {
-        println!("Press enter to start recording.");
+        println!("Press ENTER to start recording, or ESCAPE to quit.");
         loop { // TODO: unhappy with this structure, but stdin().read_line(..) not halting on non-first iterations
             if mki::are_pressed(&[mki::Keyboard::Enter]) {
                 break;
+            } else if mki::are_pressed(&[mki::Keyboard::Escape]) {
+                std::process::exit(0);
             }
         }
         record::output_to_wav(WORKING_WAV_FILE); // will inform to press enter to stop
-        let read = transcribe::wav_to_text(WORKING_WAV_FILE);
+        let read = transcribe::wav_to_text(&mut whisper, WORKING_WAV_FILE);
         if read.is_ok() {
             let input = read.unwrap();
             println!("Your query: {}", &input);

@@ -1,22 +1,11 @@
 // Modification of https://github.com/tazz4843/whisper-rs/blob/master/examples/audio_transcription.rs
 
 use hound;
-use whisper_rs::{FullParams, SamplingStrategy, WhisperContext, WhisperContextParameters};
+use whisper_rs::{FullParams, SamplingStrategy, WhisperState};
 
-const MODEL_BIN: &str = "C:\\Users\\benjamin.massey\\Downloads\\ggml-base.en.bin";
 
-pub fn wav_to_text(wav_file: &str) -> Result<String, &'static str> {
-    // TODO: loading at beginning of startup, rather than everytime
-    
-    // Load a context and model.
-    let ctx = WhisperContext::new_with_params(
-        MODEL_BIN,
-        WhisperContextParameters::default(),
-    )
-    .expect("failed to load model");
-    // Create a state
-    let mut state = ctx.create_state().expect("failed to create key");
 
+pub fn wav_to_text(state: &mut WhisperState, wav_file: &str) -> Result<String, &'static str> {
     // Create a params object for running the model.
     // The number of past samples to consider defaults to 0.
     let mut params = FullParams::new(SamplingStrategy::Greedy { best_of: 0 });
